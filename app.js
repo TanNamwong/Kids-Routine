@@ -1,7 +1,10 @@
 'use strict';
 /* Kids Routine v3 – เว็บแอป (PWA) ไฟล์เรียบ ไม่มีโฟลเดอร์ */
-const APP_VERSION = '3.1.0';
+const APP_VERSION = '3.3.1';
 const CHANGELOG = [
+  ['3.3.1', ['⭐ คะแนนเกมแปลงเป็นดาวอัตโนมัติทันทีที่ตอบข้อสุดท้าย (ไม่ต้องกดดูผลก่อน)']],
+  ['3.3.0', ['🎮 เกมประจำวัน: ภาษาไทย / English / คณิตศาสตร์ วิชาละ 5 ข้อ', '⭐ ได้ดาวตามคะแนน (5/5 = 2 ดาว, 3–4 = 1 ดาว) ครบ 3 วิชาได้โบนัส', '🧠 โจทย์ใหม่ทุกวัน ไม่ซ้ำกับที่เคยเล่น เลือกระดับตามวัย อนุบาล – ป.6']],
+  ['3.2.0', ['🎁 ร้านรางวัล: ตั้งรางวัลหลายอย่าง ราคาดาวต่างกัน แล้วกดแลกได้เอง', '🔥 โบนัสสตรีค: เตรียมของครบติดกัน 5 / 10 / 20 / 30 วัน ได้ดาวโบนัส', '🔒 PIN ผู้ปกครอง: ล็อกการให้ดาว หักดาว แลกรางวัล และการตั้งค่า']],
   ['3.1.0', ['🔄 ระบบอัปเดตใหม่: ตรวจเวอร์ชันใหม่อัตโนมัติ และแจ้งให้กดอัปเดต', '📋 หน้า "มีอะไรใหม่" แสดงหลังอัปเดตทุกครั้ง']],
   ['3.0.0', ['🔔 เตือนตอนเย็น/เช้า', '🗓️ ตารางเรียนมีเวลา + วันพิเศษ', '📌 แท็บต้องส่ง (การบ้าน/เงิน/เอกสาร)', '🏠 ภารกิจที่บ้าน + ดาวหลายแบบ']]
 ];
@@ -14,7 +17,8 @@ const DAY_COLORS = ['#FFB3B3','#FEE15A','#FFB8CC','#8DE8B1','#FFD0A0','#9ADDE2',
 const ORDER = [1,2,3,4,5,6,0];
 const UNIFORMS = ['🏫 ชุดนักเรียน','🏃 ชุดพละ','⚜️ ชุดลูกเสือ','🏊 ชุดว่ายน้ำ','🎨 ชุดไปรเวท','🎉 วันหยุด'];
 const KID_COLORS = ['#69C9D0','#FF85A1','#8DE8B1','#FEE15A','#FFB86B','#B79CFF'];
-const CATS = { auto: '🎒 เตรียมของ', chore: '🧹 ภารกิจบ้าน', kind: '💖 น้ำใจ', study: '📚 ตั้งใจเรียน', other: '🌟 อื่น ๆ' };
+const CATS = { auto: '🎒 เตรียมของ', chore: '🧹 ภารกิจบ้าน', kind: '💖 น้ำใจ', study: '📚 ตั้งใจเรียน', other: '🌟 อื่น ๆ', bonus: '🔥 โบนัสสตรีค', game: '🎮 เกมเรียนรู้' };
+const BONUS = { 5: 1, 10: 2, 20: 3, 30: 5 };
 const GIVE_CATS = ['kind', 'study', 'chore', 'other'];
 const TODO_TYPES = { hw: '📝 การบ้าน', money: '💰 เงิน', form: '📄 เอกสาร', item: '🎒 ของส่งครู', other: '📌 อื่น ๆ' };
 const SPECIAL_PRESETS = [
@@ -38,6 +42,9 @@ function defDay(kid, dow) {
     ? { uniform: '🏫 ชุดนักเรียน', periods: ['คณิต', 'ไทย', 'อังกฤษ'].map(n => ({ time: '', name: n })), extras: ['สีไม้', 'แฟ้มการบ้าน'] }
     : { uniform: '🏃 ชุดพละ', periods: [], extras: ['ชุดว่ายน้ำ', 'ที่นอน', 'กระติกน้ำ'] };
 }
+function defShop() {
+  return [{ id: uid(), name: '🍦 ไอศกรีม', cost: 10 }, { id: uid(), name: '🍽️ เลือกเมนูมื้อเย็น', cost: 15 }, { id: uid(), name: '🎡 ไปเที่ยวพิเศษ', cost: 30 }];
+}
 function defChores() {
   return [
     { id: uid(), name: '🪥 แปรงฟันก่อนนอน', stars: 1, days: [0,1,2,3,4,5,6] },
@@ -59,7 +66,7 @@ function defaults() {
     { id: 'potter', name: 'พี่พอตเตอร์', emoji: '👦🏻', color: '#69C9D0' },
     { id: 'winner', name: 'น้องวินเนอร์', emoji: '🧒🏻', color: '#FF85A1' }
   ];
-  const S = { v: 3, kids, sched: {}, check: {}, done: {}, stars: {}, goal: {}, chores: {}, special: [], todos: [],
+  const S = { v: 3, kids, sched: {}, check: {}, done: {}, stars: {}, goal: {}, chores: {}, shop: {}, games: {}, gameSeen: {}, level: {}, pin: '', special: [], todos: [],
     rem: { evening: { on: false, time: '20:00' }, morning: { on: false, time: '06:30' } }, remFired: {}, lastKid: 'potter' };
   kids.forEach(k => fillKid(S, k.id));
   S.check.potter = ['แฟ้มการบ้าน 📝', 'กระติกน้ำ 💧', 'เงินค่าขนม 💰'];
@@ -70,8 +77,13 @@ function fillKid(S, id) {
   S.sched[id] = S.sched[id] || [0,1,2,3,4,5,6].map(d => defDay(id, d));
   S.check[id] = S.check[id] || [];
   S.stars[id] = S.stars[id] || [];
-  S.goal[id] = S.goal[id] || { target: 10, reward: '🍦 ไอศกรีม' };
+  if (!S.shop[id]) {
+    const g = S.goal && S.goal[id];
+    S.shop[id] = g ? [{ id: uid(), name: g.reward, cost: g.target }, ...defShop().filter(x => x.cost > g.target)] : defShop();
+  }
   S.chores[id] = S.chores[id] || defChores();
+  S.games[id] = S.games[id] || {};
+  S.gameSeen[id] = S.gameSeen[id] || {};
 }
 function load() {
   try { const raw = localStorage.getItem(KEY); if (raw) return sanitize(JSON.parse(raw)); } catch (e) {}
@@ -82,11 +94,14 @@ function sanitize(o) {
   if (!o || !Array.isArray(o.kids) || !o.kids.length) return d;
   const S = Object.assign(d, o);
   S.v = 3;
+  S.shop = (o.shop && typeof o.shop === 'object') ? o.shop : {};
+  S.goal = (o.goal && typeof o.goal === 'object') ? o.goal : {};
   S.kids = o.kids.map((k, i) => ({
     id: String(k.id || 'kid' + i), name: String(k.name || 'เด็กน้อย'),
     emoji: String(k.emoji || '🧒'), color: String(k.color || KID_COLORS[i % KID_COLORS.length])
   }));
-  ['sched', 'check', 'stars', 'goal', 'done', 'chores', 'remFired'].forEach(f => { if (!S[f] || typeof S[f] !== 'object') S[f] = {}; });
+  ['sched', 'check', 'stars', 'goal', 'done', 'chores', 'remFired', 'shop', 'games', 'gameSeen', 'level'].forEach(f => { if (!S[f] || typeof S[f] !== 'object') S[f] = {}; });
+  if (typeof S.pin !== 'string' || !/^\d{4}$/.test(S.pin)) S.pin = '';
   if (!Array.isArray(S.special)) S.special = [];
   if (!Array.isArray(S.todos)) S.todos = [];
   S.rem = Object.assign({ evening: { on: false, time: '20:00' }, morning: { on: false, time: '06:30' } }, o.rem || {});
@@ -96,7 +111,7 @@ function sanitize(o) {
     if (!Array.isArray(S.sched[k.id]) || S.sched[k.id].length !== 7) S.sched[k.id] = [0,1,2,3,4,5,6].map(x => defDay(k.id, x));
     S.sched[k.id] = S.sched[k.id].map(normDay);
     if (!had) S.chores[k.id] = defChores();
-    S.stars[k.id].forEach(e => { if (!e.c) e.c = e.t === 'auto' ? 'auto' : e.t === 'chore' ? 'chore' : 'other'; });
+    S.stars[k.id].forEach(e => { if (!e.c) e.c = e.t === 'auto' ? 'auto' : e.t === 'chore' ? 'chore' : e.t === 'bonus' ? 'bonus' : e.t === 'game' ? 'game' : 'other'; });
   });
   if (!S.kids.some(k => k.id === S.lastKid)) S.lastKid = S.kids[0].id;
   return S;
@@ -140,23 +155,30 @@ function relLabel(due) {
   if (n === 1) return { t: 'พรุ่งนี้', cls: 'soon' };
   return { t: `อีก ${n} วัน · ${thShort(fromKey(due))}`, cls: '' };
 }
-function streak(id) {
+function streakAt(id, dk) {
   const has = new Set(S.stars[id].filter(e => e.t === 'auto').map(e => e.d));
-  let d = startOfDay(new Date()), n = 0;
-  if (!has.has(dkey(d))) d = addDays(d, -1);
+  let d = fromKey(dk), n = 0;
   while (has.has(dkey(d))) { n++; d = addDays(d, -1); }
   return n;
+}
+function streak(id) {
+  const has = new Set(S.stars[id].filter(e => e.t === 'auto').map(e => e.d)), t = startOfDay(new Date());
+  let d = addDays(t, 1);
+  if (!has.has(dkey(d))) d = t;
+  if (!has.has(dkey(d))) d = addDays(t, -1);
+  return streakAt(id, dkey(d));
 }
 
 /* ---------- วาดหน้าจอ ---------- */
 function render() {
+  gSweep();
   document.documentElement.style.setProperty('--kid', kidOf().color);
   $('#kidbar').innerHTML = S.kids.map(k =>
     `<button class="kidbtn ${k.id === ui.kid ? 'on' : ''}" style="--kc:${esc(k.color)}" data-act="kid" data-id="${esc(k.id)}">${esc(k.emoji)} ${esc(k.name)}</button>`).join('');
   const pend = todosFor(ui.kid).filter(t => !t.done).length;
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === ui.tab));
   const nb = $('#todoBadge'); if (nb) { nb.textContent = pend; nb.hidden = !pend; }
-  $('#view').innerHTML = { home: vHome, week: vWeek, dress: vDress, todo: vTodo, stars: vStars }[ui.tab]();
+  $('#view').innerHTML = { home: vHome, week: vWeek, dress: vDress, todo: vTodo, game: vGames, stars: vStars }[ui.tab]();
 }
 
 function periodsHtml(ps) {
@@ -223,6 +245,9 @@ function vHome() {
     h += `<label class="chk"><input type="checkbox" data-change="chore" data-id="${esc(c.id)}" ${choreDone(k.id, c, tk) ? 'checked' : ''}><span class="box"></span><span class="txt">${esc(c.name)}</span><span class="pill">+${c.stars} ⭐</span></label>`;
   });
   h += `<div style="margin-top:10px"><button class="btn small ghost" data-act="editChores">✏️ แก้ภารกิจ</button></div></div>`;
+  h += `<div class="card c-b"><div class="row sp"><div class="ttl">🎮 เกมประจำวัน</div><b>${gDoneCount(k.id, tk)}/3</b></div>
+    <div class="mini" style="margin-bottom:8px;color:var(--ink)">ไทย · English · คณิต — เล่นแล้วได้ดาว</div>
+    <button class="btn small block" data-act="tab" data-tab="game">▶️ ไปเล่นเกม</button></div>`;
   return h;
 }
 
@@ -295,18 +320,26 @@ function vDress() {
 }
 
 function vStars() {
-  const k = kidOf(), total = starTotal(k.id), g = S.goal[k.id], st = streak(k.id);
-  const pct = Math.min(100, total / Math.max(1, g.target) * 100);
+  const k = kidOf(), total = starTotal(k.id), st = streak(k.id);
+  const shop = S.shop[k.id].slice().sort((a, b) => a.cost - b.cost), nx = shop.find(x => x.cost > total);
+  const pct = nx ? Math.min(100, Math.max(0, total / nx.cost * 100)) : 100;
+  const nb = Object.keys(BONUS).map(Number).sort((a, b) => a - b).find(n => n > st);
   let h = `<div class="card c-p starhero"><div class="s">⭐</div><div class="n">${total}</div><div>ดาวสะสมของ${esc(k.name)}</div>
-    ${st > 1 ? `<div class="pill" style="margin-top:6px">🔥 เตรียมของครบติดกัน ${st} วัน</div>` : ''}
-    <div class="goalbar"><i style="width:${Math.max(0, pct)}%"></i></div>
-    <div class="mini" style="color:var(--ink)">เป้าหมาย: ${esc(g.reward)} (${g.target} ดวง) ${total >= g.target ? '— แลกได้แล้ว! 🎁' : `— อีก ${g.target - Math.max(0, total)} ดวง`}</div></div>
-    <div class="row" style="margin-bottom:12px">
+    ${st > 0 ? `<div class="pill" style="margin-top:6px">🔥 เตรียมของครบติดกัน ${st} วัน${nb ? ` · อีก ${nb - st} วันได้โบนัส +${BONUS[nb]} ⭐` : ''}</div>` : ''}
+    <div class="goalbar"><i style="width:${pct}%"></i></div>
+    <div class="mini" style="color:var(--ink)">${nx ? `ถัดไป: ${esc(nx.name)} (${nx.cost} ดวง) — อีก ${nx.cost - Math.max(0, total)} ดวง` : shop.length ? 'แลกได้ทุกอย่างในร้านแล้ว! 🎉' : 'ยังไม่มีรางวัล เพิ่มได้ที่ร้านรางวัล'}</div></div>
+    <div class="row" style="margin-bottom:16px">
       <button class="btn pink grow" data-act="giveStar">⭐ ให้ดาว</button>
       <button class="btn ghost grow" data-act="starSub">หักดาว −1</button></div>
-    <div class="row" style="margin-bottom:16px">
-      <button class="btn green grow" data-act="redeem" ${total >= g.target ? '' : 'disabled'}>🎁 แลกรางวัล</button>
-      <button class="btn ghost grow" data-act="editGoal">🎯 ตั้งเป้าหมาย</button></div>`;
+    <div class="card"><div class="row sp"><div class="ttl">🎁 ร้านรางวัล</div><button class="btn small ghost" data-act="editShop">✏️ แก้ร้าน</button></div>`;
+  if (!shop.length) h += `<div class="empty">ยังไม่มีรางวัล</div>`;
+  shop.forEach(it => {
+    const can = total >= it.cost;
+    h += `<div class="tdrow" style="padding:8px 0"><div style="flex:1;min-width:0"><div>${esc(it.name)}</div><div class="mini">${it.cost} ⭐${can ? '' : ` · อีก ${it.cost - Math.max(0, total)}`}</div>
+      <div class="prog" style="height:8px;margin:4px 0 0"><i style="width:${Math.min(100, Math.max(0, total / it.cost * 100))}%"></i></div></div>
+      <button class="btn small ${can ? 'green' : 'ghost'}" data-act="buy" data-id="${esc(it.id)}" ${can ? '' : 'disabled'}>🎁 แลก</button></div>`;
+  });
+  h += `</div>`;
 
   const by = {}; S.stars[k.id].forEach(e => { if (e.n > 0) by[e.c || 'other'] = (by[e.c || 'other'] || 0) + e.n; });
   const keys = Object.keys(CATS).filter(c => by[c]);
@@ -329,12 +362,91 @@ function vStars() {
   return h + `</div>`;
 }
 
+/* ---------- เกมประจำวัน ---------- */
+const gSubj = id => GAME_SUBJECTS.find(x => x.id === id);
+const gLevelOf = id => GAME_LEVELS.find(x => x.id === id);
+const gDay = (kid, dk) => { S.games[kid] = S.games[kid] || {}; return (S.games[kid][dk] = S.games[kid][dk] || {}); };
+const gGet = (kid, dk, sb) => ((S.games[kid] || {})[dk] || {})[sb];
+const gDoneCount = (kid, dk) => GAME_SUBJECTS.filter(x => { const t = gGet(kid, dk, x.id); return t && t.done; }).length;
+const gCur = () => ui.play.practice ? ui.prac : gGet(ui.kid, dkey(new Date()), ui.play.subj);
+function gMarkSeen(kid, sb, qs) {
+  S.gameSeen[kid] = S.gameSeen[kid] || {};
+  S.gameSeen[kid][sb] = (S.gameSeen[kid][sb] || []).concat(qs.map(q => q.id)).slice(-400);
+}
+function gPrune(kid) {
+  const t = startOfDay(new Date());
+  Object.keys(S.games[kid] || {}).forEach(k => { if (daysBetween(fromKey(k), t) > 14) delete S.games[kid][k]; });
+}
+function vGames() {
+  if (ui.play) return vPlay();
+  const k = kidOf(), lv = S.level[k.id], dk = dkey(new Date());
+  let h = `<h2>🎮 เกมประจำวัน</h2><p class="sub">เล่นวันละ 3 วิชา โจทย์ใหม่ทุกวัน ไม่ซ้ำเดิม</p>`;
+  if (lv === undefined) {
+    return h + `<div class="card c-y"><div class="ttl">เลือกระดับของ${esc(k.name)}ก่อนนะ</div>
+      <div class="pick">${GAME_LEVELS.map(l => `<button data-act="gSetLevel" data-v="${l.id}">${l.emoji} ${l.name}</button>`).join('')}</div>
+      <p class="mini" style="color:var(--ink)">เลือกให้ตรงกับชั้นเรียน เปลี่ยนทีหลังได้</p></div>`;
+  }
+  const L = gLevelOf(lv);
+  h += `<div class="row sp" style="margin-bottom:12px"><span class="pill">${L.emoji} ระดับ ${L.name}</span><button class="btn small ghost" data-act="gLevel">เปลี่ยนระดับ</button></div>`;
+  GAME_SUBJECTS.forEach(sb => {
+    const st = gGet(k.id, dk, sb.id);
+    h += `<div class="card" style="background:${sb.color}"><div class="row sp"><div class="ttl" style="margin:0">${sb.emoji} ${sb.name}</div>
+      ${st && st.done ? `<span class="pill">✅ ${st.score}/${GQ} · ${st.stars} ⭐</span>` : st ? `<span class="pill">ทำไป ${Math.min(st.i, GQ)}/${GQ}</span>` : ''}</div>
+      <div class="row" style="margin-top:10px">${st && st.done
+        ? `<button class="btn small ghost grow" data-act="gPractice" data-s="${sb.id}">🔁 ฝึกเพิ่ม (ไม่ได้ดาว)</button>`
+        : `<button class="btn grow" data-act="gStart" data-s="${sb.id}">${st ? '▶️ เล่นต่อ' : '▶️ เล่นเลย'}</button>`}</div></div>`;
+  });
+  const n = gDoneCount(k.id, dk);
+  h += `<div class="card"><div class="ttl">⭐ กติกาให้ดาว</div><div class="mini" style="color:var(--ink)">วิชาละ ${GQ} ข้อ · ถูก 5 ข้อ = 2 ดาว · ถูก 3–4 ข้อ = 1 ดาว · เล่นครบ 3 วิชาในวันเดียวได้โบนัส +1 ดาว<br>วันนี้เล่นแล้ว ${n}/3 วิชา${n === 3 ? ' 🏆' : ''}</div></div>`;
+  return h;
+}
+function vPlay() {
+  const p = ui.play, sb = gSubj(p.subj), st = gCur();
+  if (!st) { ui.play = null; return vGames(); }
+  if (st.i >= st.q.length) {
+    const stars = p.practice ? 0 : st.stars, sc = st.score;
+    const msg = sc === GQ ? 'เก่งสุดยอด! 🌟' : sc >= 3 ? 'เก่งมาก! พยายามต่อไปนะ 💪' : 'ไม่เป็นไร พรุ่งนี้มีโจทย์ใหม่ ลองฝึกเพิ่มได้เลย 😊';
+    return `<div class="card c-p starhero"><div class="s">${sc === GQ ? '🏆' : sc >= 3 ? '🎉' : '💪'}</div><div class="n">${sc}/${st.q.length}</div><div>${sb.emoji} ${sb.name}${p.practice ? ' · ฝึกเพิ่ม' : ''}</div>
+      <p style="font-weight:700;margin:10px 0 4px">${msg}</p>
+      ${p.practice ? '<div class="mini" style="color:var(--ink)">โหมดฝึกเพิ่มไม่ได้ดาว</div>' : `<div class="big">+${stars} ⭐</div>${st.bonus ? '<div class="pill" style="margin-top:6px">🏆 โบนัสเล่นครบ 3 วิชา +1 ⭐</div>' : ''}`}</div>
+      <div class="row"><button class="btn grow" data-act="gBack">กลับหน้าเกม</button><button class="btn ghost grow" data-act="gPractice" data-s="${p.subj}">🔁 ฝึกเพิ่ม</button></div>`;
+  }
+  const q = st.q[st.i], ans = q.ch >= 0, long = q.c.some(c => String(c).length > 9);
+  let h = `<div class="row sp"><button class="btn small ghost" data-act="gBack">← กลับ</button><b>${sb.emoji} ${sb.name}${p.practice ? ' · ฝึกเพิ่ม' : ''}</b><span class="pill">ข้อ ${st.i + 1}/${st.q.length}</span></div>
+    <div class="prog" style="margin:10px 0"><i style="width:${st.i / st.q.length * 100}%"></i></div>
+    <div class="card gq">${q.e ? `<div class="gemoji">${q.e}</div>` : ''}<div class="gtext">${esc(q.t)}</div>
+      ${q.sp ? `<button class="btn small ghost" data-act="speak" data-t="${esc(q.sp.txt)}" data-l="${q.sp.lang}" style="margin-top:8px">🔊 ฟังเสียง</button>` : ''}</div>
+    <div class="gch ${long ? 'one' : ''}">${q.c.map((c, i) => `<button class="gc ${ans ? (i === q.a ? 'ok' : i === q.ch ? 'bad' : 'dim') : ''}" data-act="gAns" data-i="${i}" ${ans ? 'disabled' : ''}>${esc(c)}</button>`).join('')}</div>`;
+  if (ans) h += `<div class="card ${q.ch === q.a ? 'c-g' : 'c-p'}" style="margin-top:12px"><div class="ttl">${q.ch === q.a ? '🎉 ถูกต้อง!' : '😅 ยังไม่ใช่นะ'}</div>${q.x ? `<div>${esc(q.x)}</div>` : ''}${!p.practice && st.done && st.i + 1 >= st.q.length ? `<div class="win">⭐ คะแนน ${st.score}/${GQ} ได้ดาว +${st.stars}${st.bonus ? ' และโบนัส +1' : ''} เข้าบัญชีแล้ว</div>` : ''}</div>
+    <button class="btn pink block" style="margin-top:12px" data-act="gNext">${st.i + 1 >= st.q.length ? 'ดูผลคะแนน 🏆' : 'ข้อต่อไป ▶️'}</button>`;
+  return h;
+}
+function gFinish(kid, subj, st) {
+  if (st.done) return false;
+  const dk = dkey(new Date());
+  st.done = true; st.stars = gStarsFor(st.score);
+  if (st.stars > 0) S.stars[kid].push({ t: 'game', c: 'game', subj, n: st.stars, d: dk, note: `🎮 เกม${gSubj(subj).name} ${st.score}/${GQ}`, ts: Date.now() });
+  if (gDoneCount(kid, dk) === 3 && !S.stars[kid].some(e => e.cid === 'gbonus' && e.d === dk)) {
+    S.stars[kid].push({ t: 'game', c: 'game', cid: 'gbonus', n: 1, d: dk, note: '🏆 เล่นเกมครบ 3 วิชา', ts: Date.now() + 1 }); st.bonus = true;
+  }
+  save();
+  return true;
+}
+/* ชุดที่ตอบครบทุกข้อแล้วแต่ยังไม่ได้ให้ดาว (เช่น ปิดหน้าก่อนกดดูผล) → ให้ดาวอัตโนมัติ */
+function gSweep() {
+  const dk = dkey(new Date());
+  S.kids.forEach(k => GAME_SUBJECTS.forEach(sb => {
+    const st = gGet(k.id, dk, sb.id);
+    if (st && !st.done && st.q.every(q => q.ch >= 0)) gFinish(k.id, sb.id, st);
+  }));
+}
+
 /* ---------- Sheet ---------- */
-let ed = null, cl = null, spd = null, td = null, chs = null, gv = null, pendingYes = null;
-const OBJ = n => ({ ed, cl, spd, td, chs, gv })[n];
+let ed = null, cl = null, spd = null, td = null, chs = null, gv = null, sh = null, pin = null, pinNext = null, unlockUntil = 0, pendingYes = null;
+const OBJ = n => ({ ed, cl, spd, td, chs, gv, sh })[n];
 function openSheet(html) { $('#sheetBody').innerHTML = html; $('#sheet').classList.remove('hidden'); $('.sheet').scrollTop = 0; }
 function openSheetKeep(html) { const sc = $('.sheet').scrollTop; openSheet(html); $('.sheet').scrollTop = sc; }
-function closeSheet() { $('#sheet').classList.add('hidden'); $('#sheetBody').innerHTML = ''; ed = cl = spd = td = chs = gv = null; }
+function closeSheet() { $('#sheet').classList.add('hidden'); $('#sheetBody').innerHTML = ''; ed = cl = spd = td = chs = gv = sh = pin = null; }
 function ask(msg, yes) {
   pendingYes = yes;
   openSheet(`<h2>❓ ยืนยัน</h2><p>${esc(msg)}</p><div class="row" style="margin-top:16px"><button class="btn grow danger" data-act="askYes">ตกลง</button><button class="btn grow ghost" data-act="closeSheet">ยกเลิก</button></div>`);
@@ -418,11 +530,72 @@ function renderGive() {
     <div class="row" style="margin-top:20px"><button class="btn grow pink" data-act="gvSave">⭐ ให้ดาวเลย</button></div>`);
 }
 
+function renderShop(focus) {
+  openSheetKeep(`<h2>🎁 ร้านรางวัลของ${esc(kidOf().name)}</h2><p class="sub">ตั้งชื่อรางวัลและจำนวนดาวที่ต้องใช้</p>
+    ${sh.items.map((c, i) => `<div class="li"><input class="in" id="sh-${i}" value="${esc(c.name)}" maxlength="40" placeholder="ชื่อรางวัล" data-r="sh:items:${i}:name" aria-label="ชื่อรางวัล ${i + 1}">
+      <input class="in" type="number" min="1" max="999" inputmode="numeric" style="max-width:84px" value="${esc(c.cost)}" data-r="sh:items:${i}:cost" aria-label="ดาวที่ใช้ ${i + 1}">
+      <button class="btn small danger" data-act="shDel" data-i="${i}" aria-label="ลบ">✕</button></div>`).join('')}
+    <button class="btn small ghost" data-act="shAdd" style="margin-top:6px">＋ เพิ่มรางวัล</button>
+    <div class="row" style="margin-top:20px"><button class="btn grow" data-act="shSave">💾 บันทึก</button></div>`);
+  focusId(focus);
+}
+function renderPin(msg) {
+  const title = { enter: '🔒 ใส่ PIN ผู้ปกครอง', new: '🔐 ตั้ง PIN ใหม่ (4 หลัก)', confirm: '🔐 ใส่ PIN อีกครั้งเพื่อยืนยัน' }[pin.mode];
+  if (pin.mode === 'forgot') {
+    openSheet(`<h2>🤔 ลืม PIN?</h2><p>ตอบโจทย์นี้เพื่อรีเซ็ต PIN (เด็กเล็กจะทำไม่ได้)</p><div class="big" style="text-align:center;margin:10px 0">${pin.q.a} × ${pin.q.b} = ?</div>
+      <input class="in" id="pin-ans" type="number" inputmode="numeric" data-enter="pinForgotOk" aria-label="คำตอบ">
+      <div class="row" style="margin-top:16px"><button class="btn grow" data-act="pinForgotOk">ตกลง</button></div>`);
+    focusId('pin-ans'); return;
+  }
+  openSheet(`<h2 style="text-align:center">${title}</h2><div class="pindots">${[0,1,2,3].map(i => `<i class="${i < pin.buf.length ? 'on' : ''}"></i>`).join('')}</div>
+    ${msg ? `<p class="mini" style="text-align:center;color:var(--danger)">${esc(msg)}</p>` : ''}
+    <div class="keys">${['1','2','3','4','5','6','7','8','9','','0','⌫'].map(k => k === '' ? '<span></span>' : `<button data-act="pinKey" data-k="${k}" aria-label="${k === '⌫' ? 'ลบ' : k}">${k}</button>`).join('')}</div>
+    ${pin.mode === 'enter' ? '<div style="text-align:center;margin-top:12px"><button class="btn small ghost" data-act="pinForgot">ลืม PIN?</button></div>' : ''}`);
+}
+function guard(fn) {
+  if (!S.pin || Date.now() < unlockUntil) return fn();
+  pin = { mode: 'enter', buf: '', first: '' }; pinNext = fn; renderPin();
+}
+
 /* ---------- Actions ---------- */
 const A = {
-  tab: el => { ui.tab = el.dataset.tab; render(); window.scrollTo(0, 0); },
+  tab: el => { ui.tab = el.dataset.tab; ui.play = null; render(); window.scrollTo(0, 0); },
   kid: el => { ui.kid = el.dataset.id; S.lastKid = ui.kid; save(); render(); },
   when: el => { ui.when = el.dataset.w; render(); },
+  gSetLevel: el => { S.level[ui.kid] = +el.dataset.v; save(); closeSheet(); render(); toast('ตั้งระดับแล้ว'); },
+  gLevel: () => guard(() => openSheet(`<h2>🎓 เลือกระดับของ${esc(kidOf().name)}</h2>
+    <div class="pick">${pickBtns('gSetLevel', GAME_LEVELS.map(l => [String(l.id), l.emoji + ' ' + l.name]), String(S.level[ui.kid]))}</div>
+    <p class="mini">ชุดโจทย์ที่เริ่มเล่นแล้ววันนี้จะไม่เปลี่ยน ระดับใหม่ใช้กับชุดถัดไป</p>`)),
+  gStart: el => {
+    const k = kidOf(), s = el.dataset.s, dk = dkey(new Date());
+    if (S.level[k.id] === undefined) return toast('เลือกระดับก่อนนะ');
+    const day = gDay(k.id, dk);
+    if (!day[s]) {
+      const q = genSet(s, S.level[k.id], (S.gameSeen[k.id] || {})[s]);
+      gMarkSeen(k.id, s, q); gPrune(k.id);
+      day[s] = { q, i: 0, score: 0, done: false, stars: 0 };
+    }
+    ui.play = { subj: s, practice: false }; save(); render(); window.scrollTo(0, 0);
+  },
+  gPractice: el => {
+    const k = kidOf(), s = el.dataset.s, q = genSet(s, S.level[k.id], (S.gameSeen[k.id] || {})[s]);
+    gMarkSeen(k.id, s, q); save();
+    ui.prac = { q, i: 0, score: 0 }; ui.play = { subj: s, practice: true }; render(); window.scrollTo(0, 0);
+  },
+  gAns: el => {
+    const st = gCur(), q = st.q[st.i]; if (q.ch >= 0) return;
+    q.ch = +el.dataset.i; if (q.ch === q.a) st.score++;
+    let got = false;
+    if (!ui.play.practice) { if (st.i + 1 >= st.q.length) got = gFinish(ui.kid, ui.play.subj, st); else save(); }
+    render();
+    if (got && (st.stars > 0 || st.bonus)) { burst(); toast(`⭐ ได้ดาว +${st.stars + (st.bonus ? 1 : 0)} อัตโนมัติ`); }
+  },
+  gNext: () => { const st = gCur(); st.i++; if (!ui.play.practice) save(); render(); window.scrollTo(0, 0); },
+  gBack: () => { ui.play = null; render(); },
+  speak: el => {
+    try { if (!('speechSynthesis' in window)) return toast('เครื่องนี้ไม่รองรับเสียงอ่าน'); speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(el.dataset.t); u.lang = el.dataset.l || 'en-US'; u.rate = 0.85; speechSynthesis.speak(u); } catch (e) {}
+  },
   closeSheet,
   askYes: () => { const f = pendingYes; pendingYes = null; closeSheet(); if (f) f(); },
 
@@ -532,7 +705,7 @@ const A = {
   tdDel: () => { const id = td.id; ask('ลบรายการนี้?', () => { S.todos = S.todos.filter(x => x.id !== id); save(); render(); }); },
 
   /* ดาว */
-  giveStar: () => { gv = { c: 'kind', n: 1, note: '' }; renderGive(); },
+  giveStar: () => guard(() => { gv = { c: 'kind', n: 1, note: '' }; renderGive(); }),
   gvCat: el => { gv.c = el.dataset.v; renderGive(); },
   gvN: el => { gv.n = +el.dataset.v; renderGive(); },
   gvSave: () => {
@@ -540,35 +713,58 @@ const A = {
     S.stars[k.id].push({ t: 'manual', c: gv.c, n: gv.n, note: `${CATS[gv.c]}${gv.note.trim() ? ' · ' + gv.note.trim() : ''}`, d: dkey(new Date()), ts: Date.now() });
     save(); closeSheet(); render(); burst();
   },
-  starSub: () => {
+  starSub: () => guard(() => {
     const k = kidOf();
     if (starTotal(k.id) <= 0) return toast('ไม่มีดาวให้หักแล้ว');
     S.stars[k.id].push({ t: 'manual', c: 'other', n: -1, note: '➖ หักดาว', d: dkey(new Date()), ts: Date.now() });
     save(); render();
-  },
-  redeem: () => {
-    const k = kidOf(), g = S.goal[k.id];
-    if (starTotal(k.id) < g.target) return;
-    ask(`แลก "${g.reward}" ใช้ ${g.target} ดาว ใช่ไหม?`, () => {
-      S.stars[k.id].push({ t: 'manual', c: 'other', n: -g.target, note: '🎁 แลกรางวัล ' + g.reward, d: dkey(new Date()), ts: Date.now() });
+  }),
+  buy: el => guard(() => {
+    const k = kidOf(), it = S.shop[k.id].find(x => x.id === el.dataset.id);
+    if (!it || starTotal(k.id) < it.cost) return;
+    ask(`แลก "${it.name}" ใช้ ${it.cost} ดาว ใช่ไหม?`, () => {
+      if (starTotal(k.id) < it.cost) return;
+      S.stars[k.id].push({ t: 'manual', c: 'other', n: -it.cost, note: '🎁 แลกรางวัล ' + it.name, d: dkey(new Date()), ts: Date.now() });
       save(); render(); burst(); toast('🎁 แลกรางวัลแล้ว ยินดีด้วย!');
     });
+  }),
+  editShop: () => guard(() => { sh = { items: S.shop[ui.kid].map(x => ({ ...x })) }; renderShop(); }),
+  shAdd: () => { sh.items.push({ id: uid(), name: '', cost: 10 }); renderShop('sh-' + (sh.items.length - 1)); },
+  shDel: el => { sh.items.splice(+el.dataset.i, 1); renderShop(); },
+  shSave: () => {
+    S.shop[ui.kid] = sh.items.map(x => ({ id: x.id, name: String(x.name).trim(), cost: Math.max(1, Math.min(999, parseInt(x.cost, 10) || 10)) })).filter(x => x.name);
+    save(); closeSheet(); render(); toast('💾 บันทึกร้านรางวัลแล้ว');
   },
-  editGoal: () => {
-    const g = S.goal[ui.kid];
-    openSheet(`<h2>🎯 เป้าหมายดาว</h2>
-      <label class="f" for="g-reward">รางวัล</label><input class="in" id="g-reward" value="${esc(g.reward)}" maxlength="40">
-      <label class="f" for="g-target">จำนวนดาวที่ต้องใช้</label><input class="in" id="g-target" type="number" min="1" max="999" inputmode="numeric" value="${g.target}">
-      <div class="row" style="margin-top:20px"><button class="btn grow" data-act="saveGoal">💾 บันทึก</button></div>`);
+
+  /* PIN */
+  pinKey: el => {
+    const k = el.dataset.k;
+    if (k === '⌫') pin.buf = pin.buf.slice(0, -1); else if (pin.buf.length < 4) pin.buf += k;
+    if (pin.buf.length < 4) return renderPin();
+    renderPin();
+    setTimeout(() => {
+      if (!pin) return;
+      if (pin.mode === 'enter') {
+        if (pin.buf === S.pin) { unlockUntil = Date.now() + 120000; const f = pinNext; pinNext = null; closeSheet(); if (f) f(); }
+        else { pin.buf = ''; renderPin('PIN ไม่ถูกต้อง ลองอีกครั้ง'); }
+      } else if (pin.mode === 'new') { pin.first = pin.buf; pin.buf = ''; pin.mode = 'confirm'; renderPin(); }
+      else if (pin.mode === 'confirm') {
+        if (pin.buf === pin.first) { S.pin = pin.first; save(); unlockUntil = Date.now() + 120000; closeSheet(); toast('🔒 ตั้ง PIN แล้ว'); openSettings(); }
+        else { pin.mode = 'new'; pin.buf = ''; pin.first = ''; renderPin('PIN ไม่ตรงกัน ตั้งใหม่อีกครั้ง'); }
+      }
+    }, 120);
   },
-  saveGoal: () => {
-    const t = Math.max(1, Math.min(999, parseInt($('#g-target').value, 10) || 10));
-    S.goal[ui.kid] = { reward: $('#g-reward').value.trim() || '🎁 รางวัล', target: t };
-    save(); closeSheet(); render();
+  pinSet: () => { pin = { mode: 'new', buf: '', first: '' }; renderPin(); },
+  pinOff: () => ask('ปิดการใช้ PIN ผู้ปกครอง?', () => { S.pin = ''; save(); toast('ปิด PIN แล้ว'); openSettings(); }),
+  pinForgot: () => { pin = { mode: 'forgot', buf: '', first: '', q: { a: 12 + Math.floor(Math.random() * 8), b: 4 + Math.floor(Math.random() * 6) } }; renderPin(); },
+  pinForgotOk: () => {
+    const v = parseInt($('#pin-ans').value, 10);
+    if (v === pin.q.a * pin.q.b) { S.pin = ''; save(); pinNext = null; closeSheet(); toast('รีเซ็ต PIN แล้ว'); }
+    else { pin.q = { a: 12 + Math.floor(Math.random() * 8), b: 4 + Math.floor(Math.random() * 6) }; renderPin(); toast('ไม่ถูกต้อง ลองโจทย์ใหม่'); }
   },
 
   /* ตั้งค่า */
-  settings: openSettings,
+  settings: () => guard(openSettings),
   whatsNew: () => showWhatsNew(false),
   saveKid: el => {
     const id = el.dataset.id, k = S.kids.find(x => x.id === id);
@@ -588,7 +784,7 @@ const A = {
     const id = el.dataset.id, k = S.kids.find(x => x.id === id);
     ask(`ลบ "${k.name}" และข้อมูลทั้งหมดของเขา?`, () => {
       S.kids = S.kids.filter(x => x.id !== id);
-      ['sched', 'check', 'stars', 'goal', 'chores'].forEach(f => delete S[f][id]);
+      ['sched', 'check', 'stars', 'goal', 'chores', 'shop', 'games', 'gameSeen', 'level'].forEach(f => delete S[f][id]);
       Object.keys(S.done).forEach(key => { if (key.endsWith('|' + id)) delete S.done[key]; });
       S.todos = S.todos.filter(t => t.kid !== id); S.special = S.special.filter(s => s.kid !== id);
       if (ui.kid === id) { ui.kid = S.kids[0].id; S.lastKid = ui.kid; }
@@ -661,6 +857,8 @@ function openSettings() {
   h += `<div class="row" style="margin-top:6px">${canNotif && perm !== 'granted' ? '<button class="btn small" data-act="notifPerm">🔔 อนุญาตแจ้งเตือน</button>' : ''}<button class="btn small ghost" data-act="remTest">ลองเตือนเดี๋ยวนี้</button></div>
     <p class="mini">แอปจะเตือนเมื่อเปิดหน้านี้ไว้หรือเปิดแอปหลังถึงเวลา ${WEB_FILES ? 'ถ้าต้องการให้เตือนแม้ปิดแอป ใช้ปุ่มเพิ่มลงปฏิทินด้านล่าง' : ''}</p>`;
   if (WEB_FILES) h += `<button class="btn small ghost" data-act="icsFile">📆 เพิ่มเตือนลงปฏิทินมือถือ (.ics)</button>`;
+  h += `<div class="sect"><h3 style="margin-top:12px">🔒 PIN ผู้ปกครอง</h3><p class="mini">ล็อกการให้/หักดาว แลกรางวัล และหน้าตั้งค่า กันเด็กกดเอง ${S.pin ? '(เปิดใช้อยู่)' : '(ยังไม่เปิด)'}</p>
+    <div class="row"><button class="btn small" data-act="pinSet">${S.pin ? 'เปลี่ยน PIN' : 'ตั้ง PIN'}</button>${S.pin ? '<button class="btn small ghost" data-act="pinOff">ปิด PIN</button>' : ''}</div></div>`;
   h += `<div class="sect"><h3 style="margin-top:12px">👨‍👩‍👧‍👦 เด็ก ๆ</h3>`;
   S.kids.forEach(k => {
     h += `<div class="card" style="box-shadow:none;border:2px solid var(--line)">
@@ -732,10 +930,12 @@ document.addEventListener('change', e => {
     if (!t.checked && idx >= 0) arr.splice(idx, 1);
     const items = S.check[k.id], complete = items.length > 0 && items.every(i => arr.includes(i));
     const has = S.stars[k.id].findIndex(s => s.t === 'auto' && s.d === dkey(d));
-    let won = false;
-    if (complete && has < 0) { S.stars[k.id].push({ t: 'auto', c: 'auto', n: 1, d: dkey(d), note: '🎒 เตรียมของครบ ' + thDate(d), ts: Date.now() }); won = true; }
-    if (!complete && has >= 0) S.stars[k.id].splice(has, 1);
-    save(); render(); if (won) burst();
+    let won = false, bonusMsg = '';
+    if (complete && has < 0) { S.stars[k.id].push({ t: 'auto', c: 'auto', n: 1, d: dkey(d), note: '🎒 เตรียมของครบ ' + thDate(d), ts: Date.now() }); won = true;
+      const n = streakAt(k.id, dkey(d)), bn = BONUS[n];
+      if (bn && !S.stars[k.id].some(s => s.t === 'bonus' && s.d === dkey(d))) { S.stars[k.id].push({ t: 'bonus', c: 'bonus', n: bn, d: dkey(d), note: `🔥 โบนัสสตรีค ${n} วัน`, ts: Date.now() + 1 }); bonusMsg = `🔥 ติดกัน ${n} วัน! โบนัส +${bn} ⭐`; } }
+    if (!complete && has >= 0) { S.stars[k.id].splice(has, 1); S.stars[k.id] = S.stars[k.id].filter(s => !(s.t === 'bonus' && s.d === dkey(d))); }
+    save(); render(); if (won) burst(); if (bonusMsg) toast(bonusMsg);
   } else if (c === 'chore') {
     const k = kidOf(), tk = dkey(new Date()), ch = S.chores[k.id].find(x => x.id === t.dataset.id); if (!ch) return;
     const i = S.stars[k.id].findIndex(s => s.t === 'chore' && s.cid === ch.id && s.d === tk);
