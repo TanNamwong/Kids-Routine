@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kids Routine – เตรียมตัวไปโรงเรียน</title>
+<meta name="description" content="แอปเตรียมของและชุดไปโรงเรียนสำหรับเด็ก ๆ พร้อมเช็คลิสต์และดาวเด็กดี">
+<meta name="theme-color" content="#69C9D0">
+<meta name="color-scheme" content="light">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kids Routine">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="updatebar" class="updatebar hidden">
+  🎉 มีเวอร์ชันใหม่!
+  <button data-act="applyUpdate">อัปเดตเลย</button>
+</div>
+
+<div id="remind" class="remindbar hidden" role="alert">
+  <span id="remindText"></span>
+  <button data-act="remGo">ดูเลย</button><button data-act="remClose" aria-label="ปิด">✕</button>
+</div>
+
+<header class="top">
+  <h1>🎒 Kids Routine</h1>
+  <button class="icon-btn" data-act="settings" aria-label="ตั้งค่า">⚙️</button>
+</header>
+
+<div id="kidbar" class="kidbar"></div>
+
+<main id="view"></main>
+
+<nav class="nav" id="nav">
+  <button data-act="tab" data-tab="home"><span>🏠</span>หน้าแรก</button>
+  <button data-act="tab" data-tab="week"><span>🎒</span>ตารางสอน</button>
+  <button data-act="tab" data-tab="dress"><span>👕</span>แต่งตัว</button>
+  <button data-act="tab" data-tab="todo"><span>📌</span>ต้องส่ง<i id="todoBadge" class="nbadge" hidden></i></button>
+  <button data-act="tab" data-tab="stars"><span>🌟</span>ดาวเด็กดี</button>
+</nav>
+
+<div id="sheet" class="sheet-wrap hidden">
+  <div class="backdrop" data-act="closeSheet"></div>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <button class="sheet-x" data-act="closeSheet" aria-label="ปิด">✕</button>
+    <div class="grab"></div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script src="app.js"></script>
+</body>
+</html>

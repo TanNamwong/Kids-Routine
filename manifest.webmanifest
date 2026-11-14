@@ -1,0 +1,17 @@
+{
+  "name": "Kids Routine – เตรียมตัวไปโรงเรียน",
+  "short_name": "Kids Routine",
+  "description": "เตรียมชุด ของ และเช็คลิสต์ก่อนไปโรงเรียน พร้อมสะสมดาวเด็กดี",
+  "lang": "th",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8F0",
+  "theme_color": "#69C9D0",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
