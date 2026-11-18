@@ -1,7 +1,14 @@
 'use strict';
 /* Kids Routine v3 – เว็บแอป (PWA) ไฟล์เรียบ ไม่มีโฟลเดอร์ */
-const APP_VERSION = '3.3.1';
+const APP_VERSION = '3.10.0';
 const CHANGELOG = [
+  ['3.10.0', ['🌏 “เรียนภาษา” แยกออกมาเป็นเมนูแถบล่างของตัวเอง (ภาษาจีน · ภาษาญี่ปุ่น) หน้าเรียนรู้กลับมาเหลือเฉพาะเกมวิชาต่าง ๆ']],
+  ['3.9.0', ['🀄🗾 เมนูใหม่ “เรียนภาษา” ในหน้าเรียนรู้: ภาษาจีน และภาษาญี่ปุ่น','📚 คำศัพท์ 7 หมวด (ทักทาย ตัวเลข สัตว์ ครอบครัว สี อาหาร รอบตัว) แตะการ์ดเพื่อฟังเสียง พร้อมคำอ่านพินอิน/โรมาจิ','💬 ประโยคพื้นฐานพร้อมเสียงอ่าน (ปกติ/ช้า) ให้พูดตามแล้วกดบันทึกว่าพูดแล้ว','🎮 ทดสอบคำศัพท์และประโยคแบบเกม ได้ดาวตามคะแนน (ไม่นับโบนัสครบวิชา)']],
+  ['3.8.0', ['🚩 เกมใหม่ “ทายธงชาติ”: ดูธงทายประเทศ · เลือกธงให้ตรงชื่อประเทศ · ถูก/ผิด · ทวีป · เมืองหลวง (39 ประเทศ รวมเพื่อนบ้านอาเซียน)', '🔁 โจทย์ไม่ซ้ำ: หนึ่งชุดไม่มีประเทศซ้ำ และเลี่ยงประเทศที่เคยออกไปแล้วก่อน', '🏆 ตอนนี้มี 8 วิชา']],
+  ['3.7.0', ['🚗 เกมใหม่ “ทายยี่ห้อรถ”: ดูรถที่เห็นโลโก้บนกระจังหน้า แล้วเลือกยี่ห้อ (Toyota · Honda · Mazda · BMW ฯลฯ)', '🧩 มีโจทย์ ดูรถทายยี่ห้อ · ดูโลโก้ · ถูก/ผิด · ประเทศผู้ผลิต ตามระดับชั้น', '🏆 ตอนนี้มี 7 วิชา: เล่นครบ 3 วิชา +1 ⭐ และครบทุกวิชา +1 ⭐']],
+  ['3.6.0', ['🎓 เกมเรียนรู้แบบโรงเรียนกวดวิชา: เพิ่มวิชา วิทยาศาสตร์ · สังคมและรอบตัว · คิดวิเคราะห์ (รวม 6 วิชา)', '🧠 โจทย์หลากหลายรูปแบบ: ถูก/ผิด · เติมคำ · โจทย์ปัญหา · อ่านจับใจความ · อนุกรม/เปรียบเทียบ', '🕒 คณิตเพิ่มเรื่องเวลา เงิน หน่วยวัด เรขาคณิต ค่าเฉลี่ย · อังกฤษเพิ่มไวยากรณ์และอ่านเรื่องสั้น · ไทยเพิ่มลักษณนาม สำนวน', '🏆 โบนัสใหม่: เล่นครบ 3 วิชา +1 ⭐ และครบทั้ง 6 วิชา +1 ⭐ เพิ่ม']],
+  ['3.5.0', ['🏠 หน้าแรกเรียบง่ายขึ้น เหลือแค่ ชุด · ตารางเรียน · ของที่ต้องพก', '✅ เช็คลิสต์และภารกิจที่บ้านย้ายไปที่ โรงเรียน → เช็คลิสต์', '📅 หัววันที่สั้นลงเหลือบรรทัดเดียว']],
+  ['3.4.0', ['🗂️ เมนูใหม่ 4 หมวด: หน้าแรก · โรงเรียน · เกม · ดาว', '🎒 หมวดโรงเรียนรวม ตารางสอน / แต่งตัว / ต้องส่ง ไว้ด้วยกัน', '🏠 หน้าแรกแบ่งเป็นส่วน พร้อมแถบสรุปแตะข้ามไปส่วนที่ต้องการ', '⭐ หน้าดาวแยกแท็บ ดาวของฉัน / ร้านรางวัล / ประวัติ']],
   ['3.3.1', ['⭐ คะแนนเกมแปลงเป็นดาวอัตโนมัติทันทีที่ตอบข้อสุดท้าย (ไม่ต้องกดดูผลก่อน)']],
   ['3.3.0', ['🎮 เกมประจำวัน: ภาษาไทย / English / คณิตศาสตร์ วิชาละ 5 ข้อ', '⭐ ได้ดาวตามคะแนน (5/5 = 2 ดาว, 3–4 = 1 ดาว) ครบ 3 วิชาได้โบนัส', '🧠 โจทย์ใหม่ทุกวัน ไม่ซ้ำกับที่เคยเล่น เลือกระดับตามวัย อนุบาล – ป.6']],
   ['3.2.0', ['🎁 ร้านรางวัล: ตั้งรางวัลหลายอย่าง ราคาดาวต่างกัน แล้วกดแลกได้เอง', '🔥 โบนัสสตรีค: เตรียมของครบติดกัน 5 / 10 / 20 / 30 วัน ได้ดาวโบนัส', '🔒 PIN ผู้ปกครอง: ล็อกการให้ดาว หักดาว แลกรางวัล และการตั้งค่า']],
@@ -66,7 +73,7 @@ function defaults() {
     { id: 'potter', name: 'พี่พอตเตอร์', emoji: '👦🏻', color: '#69C9D0' },
     { id: 'winner', name: 'น้องวินเนอร์', emoji: '🧒🏻', color: '#FF85A1' }
   ];
-  const S = { v: 3, kids, sched: {}, check: {}, done: {}, stars: {}, goal: {}, chores: {}, shop: {}, games: {}, gameSeen: {}, level: {}, pin: '', special: [], todos: [],
+  const S = { v: 3, kids, sched: {}, check: {}, done: {}, stars: {}, goal: {}, chores: {}, shop: {}, games: {}, gameSeen: {}, level: {}, lang: {}, pin: '', special: [], todos: [],
     rem: { evening: { on: false, time: '20:00' }, morning: { on: false, time: '06:30' } }, remFired: {}, lastKid: 'potter' };
   kids.forEach(k => fillKid(S, k.id));
   S.check.potter = ['แฟ้มการบ้าน 📝', 'กระติกน้ำ 💧', 'เงินค่าขนม 💰'];
@@ -100,7 +107,7 @@ function sanitize(o) {
     id: String(k.id || 'kid' + i), name: String(k.name || 'เด็กน้อย'),
     emoji: String(k.emoji || '🧒'), color: String(k.color || KID_COLORS[i % KID_COLORS.length])
   }));
-  ['sched', 'check', 'stars', 'goal', 'done', 'chores', 'remFired', 'shop', 'games', 'gameSeen', 'level'].forEach(f => { if (!S[f] || typeof S[f] !== 'object') S[f] = {}; });
+  ['sched', 'check', 'stars', 'goal', 'done', 'chores', 'remFired', 'shop', 'games', 'gameSeen', 'level', 'lang'].forEach(f => { if (!S[f] || typeof S[f] !== 'object') S[f] = {}; });
   if (typeof S.pin !== 'string' || !/^\d{4}$/.test(S.pin)) S.pin = '';
   if (!Array.isArray(S.special)) S.special = [];
   if (!Array.isArray(S.todos)) S.todos = [];
@@ -123,7 +130,7 @@ function save() {
 }
 
 let S = load();
-const ui = { kid: S.lastKid, tab: 'home', when: new Date().getHours() < 12 ? 'today' : 'tomorrow' };
+const ui = { kid: S.lastKid, tab: 'home', sub: 'week', ssub: 'me', when: new Date().getHours() < 12 ? 'today' : 'tomorrow' };
 const kidOf = () => S.kids.find(k => k.id === ui.kid) || S.kids[0];
 const targetDate = () => addDays(startOfDay(new Date()), ui.when === 'tomorrow' ? 1 : 0);
 const starTotal = id => S.stars[id].reduce((a, e) => a + e.n, 0);
@@ -178,57 +185,52 @@ function render() {
   const pend = todosFor(ui.kid).filter(t => !t.done).length;
   document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === ui.tab));
   const nb = $('#todoBadge'); if (nb) { nb.textContent = pend; nb.hidden = !pend; }
-  $('#view').innerHTML = { home: vHome, week: vWeek, dress: vDress, todo: vTodo, game: vGames, stars: vStars }[ui.tab]();
+  $('#view').innerHTML = { home: vHome, school: vSchool, game: vGames, lang: vLangTab, stars: vStars }[ui.tab]();
 }
 
+function vSchool() {
+  const pend = todosFor(ui.kid).filter(t => !t.done).length;
+  const subs = [['week', '🎒 ตาราง'], ['dress', '👕 ชุด'], ['todo', '📌 ต้องส่ง' + (pend ? ` (${pend})` : '')], ['daily', '✅ เช็คลิสต์']];
+  return `<div class="seg">${subs.map(([v, l]) => `<button class="${ui.sub === v ? 'on' : ''}" data-act="sub" data-s="${v}">${l}</button>`).join('')}</div>` +
+    ({ week: vWeek, dress: vDress, todo: vTodo, daily: vDaily }[ui.sub] || vWeek)();
+}
 function periodsHtml(ps) {
   const sorted = periodsSorted(ps);
   if (!sorted.some(p => p.time)) return `<div class="chips">${chipsHtml(sorted.map(p => p.name))}</div>`;
   return sorted.map(p => `<div class="per"><b>${esc(p.time || '·')}</b><span>${esc(p.name)}</span></div>`).join('');
 }
 
-function vHome() {
-  const k = kidOf(), d = targetDate(), dk = dkey(d), day = dayFor(k.id, d), today = startOfDay(new Date());
-  const word = ui.when === 'today' ? 'วันนี้' : 'พรุ่งนี้';
-  const items = S.check[k.id], doneArr = S.done[`${dk}|${k.id}`] || [];
-  const nDone = items.filter(i => doneArr.includes(i)).length, all = items.length > 0 && nDone === items.length;
-
-  let h = `<div class="seg">
+const TMON_S = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const whenSeg = () => `<div class="seg">
     <button class="${ui.when === 'today' ? 'on' : ''}" data-act="when" data-w="today">☀️ วันนี้</button>
-    <button class="${ui.when === 'tomorrow' ? 'on' : ''}" data-act="when" data-w="tomorrow">🌙 พรุ่งนี้</button></div>
-    <h2>✨ ${word} วัน${DAYS[d.getDay()]}ที่ ${thDate(d)}</h2><p class="sub">เตรียมอะไรบ้างนะ?</p>`;
+    <button class="${ui.when === 'tomorrow' ? 'on' : ''}" data-act="when" data-w="tomorrow">🌙 พรุ่งนี้</button></div>`;
+const dayHead = d => `<div class="dayhead"><b>${ui.when === 'today' ? 'วันนี้' : 'พรุ่งนี้'}</b> · วัน${DAYS[d.getDay()]}ที่ ${d.getDate()} ${TMON_S[d.getMonth()]}</div>`;
 
+/* หน้าแรก: เฉพาะสิ่งที่ต้องเตรียม (ชุด · ตารางเรียน · ของที่ต้องพก) */
+function vHome() {
+  const k = kidOf(), d = targetDate(), day = dayFor(k.id, d);
+  const word = ui.when === 'today' ? 'วันนี้' : 'พรุ่งนี้';
+  let h = whenSeg() + dayHead(d);
   day.specials.forEach(s => {
     h += `<div class="card c-p"><div class="ttl">${esc(s.title || '📌 วันพิเศษ')}</div>${s.note ? `<div>${esc(s.note)}</div>` : ''}</div>`;
   });
   if (isEmptyDay(day)) {
-    h += `<div class="card c-y"><div class="holiday">🎉 ไม่มีอะไรต้องเตรียม<br>${day.off ? 'โรงเรียนหยุด' : 'วันหยุดสบาย ๆ'}</div></div>`;
-  } else {
-    h += `<div class="card c-y"><div class="ttl">👕 ชุด${word}</div><div class="big">${esc(day.uniform || '— ยังไม่ได้ตั้งค่า —')}</div></div>`;
-    if (day.periods.length) h += `<div class="card c-b"><div class="ttl">📚 ตารางเรียน</div>${periodsHtml(day.periods)}</div>`;
-    if (day.extras.length) h += `<div class="card c-g"><div class="ttl">🎒 ของที่ต้องพกไป</div><div class="chips">${chipsHtml(day.extras)}</div></div>`;
+    return h + `<div class="card c-y"><div class="holiday">🎉 ไม่มีอะไรต้องเตรียม<br>${day.off ? 'โรงเรียนหยุด' : 'วันหยุดสบาย ๆ'}</div></div>`;
   }
-  h += `<div class="row"><button class="btn ghost grow" data-act="editDay" data-dow="${d.getDay()}">✏️ แก้ตารางวัน${DAYS[d.getDay()]}</button>
-    <button class="btn ghost" data-act="addSpecial" data-date="${dk}">📌 วันพิเศษ</button></div>`;
+  h += `<div class="card c-y"><div class="ttl">👕 ชุด${word}</div><div class="big">${esc(day.uniform || '— ยังไม่ได้ตั้งค่า —')}</div></div>`;
+  if (day.periods.length) h += `<div class="card c-b"><div class="ttl">📚 ตารางเรียน</div>${periodsHtml(day.periods)}</div>`;
+  if (day.extras.length) h += `<div class="card c-g"><div class="ttl">🎒 ของที่ต้องพกไป</div><div class="chips">${chipsHtml(day.extras)}</div></div>`;
+  return h;
+}
 
-  // ต้องส่งเร็ว ๆ นี้
-  const lim = dkey(addDays(today, 1));
-  const due = todosFor(k.id).filter(t => !t.done && t.due && t.due <= lim).sort((a, b) => a.due.localeCompare(b.due));
-  if (due.length) {
-    h += `<div class="card" style="margin-top:16px"><div class="ttl">📌 ต้องส่งเร็ว ๆ นี้</div>`;
-    due.slice(0, 5).forEach(t => h += todoRow(t, true));
-    if (due.length > 5) h += `<div class="mini">…และอีก ${due.length - 5} รายการ</div>`;
-    h += `</div>`;
-  }
-  // วันพิเศษที่กำลังมา
-  const up = S.special.filter(s => (s.kid === 'all' || s.kid === k.id)).map(s => ({ s, n: daysBetween(today, fromKey(s.date)) }))
-    .filter(x => x.n >= 0 && x.n <= 7 && x.s.date !== dk).sort((a, b) => a.n - b.n);
-  if (up.length) {
-    h += `<div class="card c-p" style="margin-top:12px"><div class="ttl">🗓️ วันพิเศษที่กำลังมา</div>` +
-      up.map(x => `<div class="log"><span>${esc(x.s.title)}</span><span class="mini">${x.n === 0 ? 'วันนี้' : x.n === 1 ? 'พรุ่งนี้' : 'อีก ' + x.n + ' วัน'} · ${thShort(fromKey(x.s.date))}</span></div>`).join('') + `</div>`;
-  }
-
-  h += `<div class="card" style="margin-top:16px"><div class="row sp"><div class="ttl">✅ เช็คลิสต์ก่อนออกจากบ้าน</div><b>${nDone}/${items.length}</b></div>
+/* เช็คลิสต์ + ภารกิจที่บ้าน (อยู่ในหมวดโรงเรียน) */
+function vDaily() {
+  const k = kidOf(), d = targetDate(), dk = dkey(d), today = startOfDay(new Date());
+  const items = S.check[k.id], doneArr = S.done[`${dk}|${k.id}`] || [];
+  const nDone = items.filter(i => doneArr.includes(i)).length, all = items.length > 0 && nDone === items.length;
+  const cs = choresToday(k.id, today), tk = dkey(today), cDone = cs.filter(c => choreDone(k.id, c, tk)).length;
+  let h = whenSeg() + dayHead(d);
+  h += `<div class="card"><div class="row sp"><div class="ttl">✅ เช็คลิสต์ก่อนออกจากบ้าน</div><b>${nDone}/${items.length}</b></div>
     <div class="prog"><i style="width:${items.length ? nDone / items.length * 100 : 0}%"></i></div>`;
   if (!items.length) h += `<div class="empty">ยังไม่มีรายการ กด "แก้เช็คลิสต์" เพื่อเพิ่ม</div>`;
   items.forEach((it, i) => {
@@ -236,19 +238,12 @@ function vHome() {
   });
   if (all) h += `<div class="win">🎉 เก่งมาก! ได้ดาว ⭐ 1 ดวง</div>`;
   h += `<div style="margin-top:10px"><button class="btn small ghost" data-act="editCheck">✏️ แก้เช็คลิสต์</button></div></div>`;
-
-  // ภารกิจที่บ้าน (วันนี้จริง)
-  const cs = choresToday(k.id, today), tk = dkey(today);
-  h += `<div class="card"><div class="row sp"><div class="ttl">🏠 ภารกิจที่บ้านวันนี้</div><b>${cs.filter(c => choreDone(k.id, c, tk)).length}/${cs.length}</b></div>`;
+  h += `<div class="card"><div class="row sp"><div class="ttl">🏠 ภารกิจที่บ้านวันนี้</div><b>${cDone}/${cs.length}</b></div>`;
   if (!cs.length) h += `<div class="empty">วันนี้ไม่มีภารกิจ</div>`;
   cs.forEach(c => {
     h += `<label class="chk"><input type="checkbox" data-change="chore" data-id="${esc(c.id)}" ${choreDone(k.id, c, tk) ? 'checked' : ''}><span class="box"></span><span class="txt">${esc(c.name)}</span><span class="pill">+${c.stars} ⭐</span></label>`;
   });
-  h += `<div style="margin-top:10px"><button class="btn small ghost" data-act="editChores">✏️ แก้ภารกิจ</button></div></div>`;
-  h += `<div class="card c-b"><div class="row sp"><div class="ttl">🎮 เกมประจำวัน</div><b>${gDoneCount(k.id, tk)}/3</b></div>
-    <div class="mini" style="margin-bottom:8px;color:var(--ink)">ไทย · English · คณิต — เล่นแล้วได้ดาว</div>
-    <button class="btn small block" data-act="tab" data-tab="game">▶️ ไปเล่นเกม</button></div>`;
-  return h;
+  return h + `<div style="margin-top:10px"><button class="btn small ghost" data-act="editChores">✏️ แก้ภารกิจ</button></div></div>`;
 }
 
 function todoRow(t, compact) {
@@ -328,38 +323,41 @@ function vStars() {
     ${st > 0 ? `<div class="pill" style="margin-top:6px">🔥 เตรียมของครบติดกัน ${st} วัน${nb ? ` · อีก ${nb - st} วันได้โบนัส +${BONUS[nb]} ⭐` : ''}</div>` : ''}
     <div class="goalbar"><i style="width:${pct}%"></i></div>
     <div class="mini" style="color:var(--ink)">${nx ? `ถัดไป: ${esc(nx.name)} (${nx.cost} ดวง) — อีก ${nx.cost - Math.max(0, total)} ดวง` : shop.length ? 'แลกได้ทุกอย่างในร้านแล้ว! 🎉' : 'ยังไม่มีรางวัล เพิ่มได้ที่ร้านรางวัล'}</div></div>
-    <div class="row" style="margin-bottom:16px">
+    <div class="row" style="margin-bottom:14px">
       <button class="btn pink grow" data-act="giveStar">⭐ ให้ดาว</button>
       <button class="btn ghost grow" data-act="starSub">หักดาว −1</button></div>
-    <div class="card"><div class="row sp"><div class="ttl">🎁 ร้านรางวัล</div><button class="btn small ghost" data-act="editShop">✏️ แก้ร้าน</button></div>`;
-  if (!shop.length) h += `<div class="empty">ยังไม่มีรางวัล</div>`;
-  shop.forEach(it => {
-    const can = total >= it.cost;
-    h += `<div class="tdrow" style="padding:8px 0"><div style="flex:1;min-width:0"><div>${esc(it.name)}</div><div class="mini">${it.cost} ⭐${can ? '' : ` · อีก ${it.cost - Math.max(0, total)}`}</div>
-      <div class="prog" style="height:8px;margin:4px 0 0"><i style="width:${Math.min(100, Math.max(0, total / it.cost * 100))}%"></i></div></div>
-      <button class="btn small ${can ? 'green' : 'ghost'}" data-act="buy" data-id="${esc(it.id)}" ${can ? '' : 'disabled'}>🎁 แลก</button></div>`;
-  });
-  h += `</div>`;
+    <div class="seg">${[['me', '⭐ ดาวของฉัน'], ['shop', '🎁 ร้านรางวัล'], ['log', '📝 ประวัติ']].map(([v, l]) => `<button class="${ui.ssub === v ? 'on' : ''}" data-act="ssub" data-s="${v}">${l}</button>`).join('')}</div>`;
 
+  if (ui.ssub === 'shop') {
+    h += `<div class="card"><div class="row sp"><div class="ttl">🎁 ร้านรางวัล</div><button class="btn small ghost" data-act="editShop">✏️ แก้ร้าน</button></div>`;
+    if (!shop.length) h += `<div class="empty">ยังไม่มีรางวัล</div>`;
+    shop.forEach(it => {
+      const can = total >= it.cost;
+      h += `<div class="tdrow" style="padding:8px 0"><div style="flex:1;min-width:0"><div>${esc(it.name)}</div><div class="mini">${it.cost} ⭐${can ? '' : ` · อีก ${it.cost - Math.max(0, total)}`}</div>
+        <div class="prog" style="height:8px;margin:4px 0 0"><i style="width:${Math.min(100, Math.max(0, total / it.cost * 100))}%"></i></div></div>
+        <button class="btn small ${can ? 'green' : 'ghost'}" data-act="buy" data-id="${esc(it.id)}" ${can ? '' : 'disabled'}>🎁 แลก</button></div>`;
+    });
+    return h + `</div>`;
+  }
+  if (ui.ssub === 'log') {
+    const log = S.stars[k.id].slice().sort((a, b) => b.ts - a.ts).slice(0, 30);
+    h += `<div class="card"><div class="ttl">📝 ประวัติล่าสุด</div>`;
+    if (!log.length) h += `<div class="empty">ยังไม่มีดาว — ติ๊กเช็คลิสต์ ทำภารกิจ หรือเล่นเกมเพื่อรับดาว</div>`;
+    log.forEach(e => {
+      h += `<div class="log"><span>${esc(e.note || CATS[e.c] || '')}</span><span class="${e.n > 0 ? 'pos' : 'neg'}">${e.n > 0 ? '+' : ''}${e.n} ⭐</span></div>`;
+    });
+    return h + `</div>`;
+  }
   const by = {}; S.stars[k.id].forEach(e => { if (e.n > 0) by[e.c || 'other'] = (by[e.c || 'other'] || 0) + e.n; });
   const keys = Object.keys(CATS).filter(c => by[c]);
-  if (keys.length) h += `<div class="card"><div class="ttl">🌈 ดาวแต่ละแบบ (ที่ได้ทั้งหมด)</div><div class="chips">${keys.map(c => `<span class="chip" style="background:#F4EFE8">${CATS[c]} <b>${by[c]}</b></span>`).join('')}</div></div>`;
-
+  h += `<div class="card"><div class="ttl">🌈 ดาวแต่ละแบบ (ที่ได้ทั้งหมด)</div>${keys.length ? `<div class="chips">${keys.map(c => `<span class="chip" style="background:#F4EFE8">${CATS[c]} <b>${by[c]}</b></span>`).join('')}</div>` : '<div class="empty">ยังไม่มีดาว</div>'}</div>`;
   h += `<div class="card"><div class="ttl">📅 7 วันล่าสุด</div><div class="dots">`;
   for (let i = 6; i >= 0; i--) {
     const d = addDays(startOfDay(new Date()), -i), kk = dkey(d);
-    const ok = S.stars[k.id].some(e => e.t === 'auto' && e.d === kk), ch = S.stars[k.id].some(e => e.t === 'chore' && e.d === kk);
-    h += `<div><b>${ok ? '⭐' : '·'}</b><b style="font-size:14px;margin-top:-4px">${ch ? '🧹' : '&nbsp;'}</b>${DAYS_S[d.getDay()]}</div>`;
+    const ok = S.stars[k.id].some(e => e.t === 'auto' && e.d === kk), ch = S.stars[k.id].some(e => e.t === 'chore' && e.d === kk), gm = S.stars[k.id].some(e => e.t === 'game' && e.d === kk);
+    h += `<div><b>${ok ? '⭐' : '·'}</b><b style="font-size:14px;margin-top:-4px">${ch ? '🧹' : '&nbsp;'}${gm ? '🎮' : ''}</b>${DAYS_S[d.getDay()]}</div>`;
   }
-  h += `</div><div class="mini" style="margin-top:6px">⭐ เตรียมของครบ · 🧹 ทำภารกิจบ้าน</div></div>`;
-
-  const log = S.stars[k.id].slice().sort((a, b) => b.ts - a.ts).slice(0, 12);
-  h += `<div class="card"><div class="ttl">📝 ประวัติล่าสุด</div>`;
-  if (!log.length) h += `<div class="empty">ยังไม่มีดาว — ติ๊กเช็คลิสต์หรือภารกิจเพื่อรับดาว</div>`;
-  log.forEach(e => {
-    h += `<div class="log"><span>${esc(e.note || CATS[e.c] || '')}</span><span class="${e.n > 0 ? 'pos' : 'neg'}">${e.n > 0 ? '+' : ''}${e.n} ⭐</span></div>`;
-  });
-  return h + `</div>`;
+  return h + `</div><div class="mini" style="margin-top:6px">⭐ เตรียมของครบ · 🧹 ภารกิจบ้าน · 🎮 เกม</div></div>`;
 }
 
 /* ---------- เกมประจำวัน ---------- */
@@ -367,7 +365,7 @@ const gSubj = id => GAME_SUBJECTS.find(x => x.id === id);
 const gLevelOf = id => GAME_LEVELS.find(x => x.id === id);
 const gDay = (kid, dk) => { S.games[kid] = S.games[kid] || {}; return (S.games[kid][dk] = S.games[kid][dk] || {}); };
 const gGet = (kid, dk, sb) => ((S.games[kid] || {})[dk] || {})[sb];
-const gDoneCount = (kid, dk) => GAME_SUBJECTS.filter(x => { const t = gGet(kid, dk, x.id); return t && t.done; }).length;
+const gDoneCount = (kid, dk) => GAME_CORE.filter(x => { const t = gGet(kid, dk, x.id); return t && t.done; }).length;
 const gCur = () => ui.play.practice ? ui.prac : gGet(ui.kid, dkey(new Date()), ui.play.subj);
 function gMarkSeen(kid, sb, qs) {
   S.gameSeen[kid] = S.gameSeen[kid] || {};
@@ -380,54 +378,99 @@ function gPrune(kid) {
 function vGames() {
   if (ui.play) return vPlay();
   const k = kidOf(), lv = S.level[k.id], dk = dkey(new Date());
-  let h = `<h2>🎮 เกมประจำวัน</h2><p class="sub">เล่นวันละ 3 วิชา โจทย์ใหม่ทุกวัน ไม่ซ้ำเดิม</p>`;
+  let h = `<h2>🎮 เกมเรียนรู้ประจำวัน</h2><p class="sub">${GAME_CORE.length} วิชา วิชาละ ${GQ} ข้อ โจทย์ใหม่ทุกวัน เลือกเล่นวิชาไหนก็ได้</p>`;
   if (lv === undefined) {
     return h + `<div class="card c-y"><div class="ttl">เลือกระดับของ${esc(k.name)}ก่อนนะ</div>
       <div class="pick">${GAME_LEVELS.map(l => `<button data-act="gSetLevel" data-v="${l.id}">${l.emoji} ${l.name}</button>`).join('')}</div>
       <p class="mini" style="color:var(--ink)">เลือกให้ตรงกับชั้นเรียน เปลี่ยนทีหลังได้</p></div>`;
   }
-  const L = gLevelOf(lv);
-  h += `<div class="row sp" style="margin-bottom:12px"><span class="pill">${L.emoji} ระดับ ${L.name}</span><button class="btn small ghost" data-act="gLevel">เปลี่ยนระดับ</button></div>`;
-  GAME_SUBJECTS.forEach(sb => {
-    const st = gGet(k.id, dk, sb.id);
-    h += `<div class="card" style="background:${sb.color}"><div class="row sp"><div class="ttl" style="margin:0">${sb.emoji} ${sb.name}</div>
-      ${st && st.done ? `<span class="pill">✅ ${st.score}/${GQ} · ${st.stars} ⭐</span>` : st ? `<span class="pill">ทำไป ${Math.min(st.i, GQ)}/${GQ}</span>` : ''}</div>
-      <div class="row" style="margin-top:10px">${st && st.done
-        ? `<button class="btn small ghost grow" data-act="gPractice" data-s="${sb.id}">🔁 ฝึกเพิ่ม (ไม่ได้ดาว)</button>`
-        : `<button class="btn grow" data-act="gStart" data-s="${sb.id}">${st ? '▶️ เล่นต่อ' : '▶️ เล่นเลย'}</button>`}</div></div>`;
-  });
-  const n = gDoneCount(k.id, dk);
-  h += `<div class="card"><div class="ttl">⭐ กติกาให้ดาว</div><div class="mini" style="color:var(--ink)">วิชาละ ${GQ} ข้อ · ถูก 5 ข้อ = 2 ดาว · ถูก 3–4 ข้อ = 1 ดาว · เล่นครบ 3 วิชาในวันเดียวได้โบนัส +1 ดาว<br>วันนี้เล่นแล้ว ${n}/3 วิชา${n === 3 ? ' 🏆' : ''}</div></div>`;
+  const L = gLevelOf(lv), n = gDoneCount(k.id, dk), tot = GAME_CORE.length;
+  h += `<div class="row sp" style="margin-bottom:10px"><span class="pill">${L.emoji} ระดับ ${L.name}</span><button class="btn small ghost" data-act="gLevel">เปลี่ยนระดับ</button></div>
+    <div class="gprog"><div class="row sp"><b>วันนี้เล่นแล้ว ${n}/${tot} วิชา${n === tot ? ' 🏆' : ''}</b><span class="mini">${n >= 3 ? '✅ โบนัสครบ 3 วิชา' : `อีก ${3 - n} วิชาได้โบนัส`}</span></div>
+      <div class="prog" style="margin-top:8px"><i style="width:${n / tot * 100}%"></i></div></div><div class="gsubs">`;
+  GAME_CORE.forEach(sb => { h += gCard(sb, k, dk); });
+  h += `</div><div class="card" style="margin-top:12px"><div class="ttl">⭐ กติกาให้ดาว</div><div class="mini" style="color:var(--ink)">ถูก 5 ข้อ = 2 ดาว · ถูก 3–4 ข้อ = 1 ดาว<br>เล่นครบ 3 วิชาในวันเดียว +1 ดาว · ครบทั้ง ${tot} วิชา +1 ดาวอีกครั้ง<br>เกมภาษาจีน/ญี่ปุ่นได้ดาวตามคะแนน แต่ไม่นับโบนัสครบวิชา<br>โหมด “ฝึกเพิ่ม” ไม่ได้ดาว ใช้ซ้อมได้ไม่จำกัด</div></div>`;
+  return h;
+}
+function gCard(sb, k, dk) {
+    const st = gGet(k.id, dk, sb.id), done = st && st.done;
+    return `<div class="gsub" style="background:${sb.color}"><div class="gs-e">${sb.emoji}</div><div class="gs-n">${sb.name}</div>
+      <div class="gs-s">${done ? `✅ ${st.score}/${GQ} · ${st.stars}⭐` : st ? `ทำไป ${Math.min(st.i, GQ)}/${GQ}` : `${GQ} ข้อ · ได้สูงสุด 2⭐`}</div>
+      ${done ? `<button class="btn small ghost block" data-act="gPractice" data-s="${sb.id}">🔁 ฝึกเพิ่ม</button>`
+        : `<button class="btn small block" data-act="gStart" data-s="${sb.id}">${st ? '▶️ เล่นต่อ' : '▶️ เริ่ม'}</button>`}</div>`;
+}
+
+/* ---------- เรียนภาษาจีน / ญี่ปุ่น ---------- */
+const langDone = (kid, L) => (S.lang[kid] && S.lang[kid][L]) || {};
+function vLangTab() {
+  if (ui.play) return vPlay();
+  if (ui.lang) return vLang();
+  return `<h2>🌏 เรียนภาษา</h2><p class="sub">คำศัพท์ + ประโยคพื้นฐาน มีเสียงอ่านให้ฟังแล้วพูดตาม เลือกภาษาที่อยากเรียนเลย</p>
+    <div class="gsubs">${Object.keys(LANG).map(id => { const D = LANG[id]; return `<button class="lbtn" data-act="langOpen" data-l="${id}" style="background:${D.color}"><span class="gs-e">${D.emoji}</span><b>${D.name}</b><span class="mini">${D.native}</span></button>`; }).join('')}</div>
+    <div class="card" style="margin-top:12px"><div class="ttl">มีอะไรให้เรียน</div><div class="mini" style="color:var(--ink)">📚 คำศัพท์ 7 หมวด แตะการ์ดเพื่อฟังเสียง<br>💬 ประโยคพื้นฐาน ฟังปกติ/ช้า แล้วพูดตาม<br>🎮 ทดสอบ ได้ดาวตามคะแนน (ไม่นับโบนัสครบวิชา)</div></div>`;
+}
+function vLang() {
+  const D = LANG[ui.lang], k = kidOf(), dk = dkey(new Date()), t = ui.lt || 'vocab';
+  let h = `<div class="row sp" style="margin-bottom:10px"><button class="btn small ghost" data-act="langBack">← กลับ</button><b>${D.emoji} ${D.name} ${D.native}</b><span></span></div>
+    <div class="seg">${[['vocab', '📚 คำศัพท์'], ['sent', '💬 ประโยค'], ['quiz', '🎮 ทดสอบ']].map(([v, l]) => `<button class="${t === v ? 'on' : ''}" data-act="langTab" data-t="${v}">${l}</button>`).join('')}</div>`;
+  if (t === 'vocab') {
+    const c = ui.lcat === undefined ? -1 : ui.lcat, words = D.vocab.filter(v => c < 0 || v[0] === c);
+    h += `<p class="mini" style="color:var(--ink)">แตะการ์ดเพื่อฟังเสียง แล้วลองพูดตามนะ 🗣️ (ใต้คำมีคำอ่าน${D.rd})</p>
+      <div class="pick" style="margin:8px 0 12px"><button class="${c < 0 ? 'on' : ''}" data-act="langCat" data-c="-1">ทั้งหมด</button>${LANG_CATS.map((x, i) => `<button class="${c === i ? 'on' : ''}" data-act="langCat" data-c="${i}">${x[0]} ${x[1]}</button>`).join('')}</div>
+      <div class="lgrid">${words.map(v => `<button class="lcard" data-act="speak" data-t="${esc(v[1])}" data-l="${D.voice}"><span class="le">${v[4]}</span><span class="lw">${esc(v[1])}</span><span class="lr">${esc(v[2])}</span><span class="lth">${esc(v[3])}</span><span class="ls">🔊</span></button>`).join('')}</div>`;
+  } else if (t === 'sent') {
+    const done = langDone(k.id, ui.lang), n = D.sent.filter((s, i) => done[i]).length;
+    h += `<div class="gprog"><div class="row sp"><b>พูดตามแล้ว ${n}/${D.sent.length} ประโยค${n === D.sent.length ? ' 🏆' : ''}</b></div><div class="prog" style="margin-top:8px"><i style="width:${n / D.sent.length * 100}%"></i></div></div>
+      <p class="mini" style="color:var(--ink)">ฟังเสียง (ปกติ หรือช้า) → พูดตามออกเสียงดัง ๆ → กด “พูดตามแล้ว”</p>`;
+    LANG_SENT_GROUPS.forEach((g, gi) => {
+      h += `<h3 style="margin:14px 0 6px">${g}</h3>`;
+      D.sent.forEach((s, i) => { if (s[3] !== gi) return;
+        h += `<div class="card lsent ${done[i] ? 'ok' : ''}"><div class="lw2">${esc(s[0])}</div><div class="lr">${esc(s[1])}</div><div class="lth">${esc(s[2])}</div>
+          <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><button class="btn small" data-act="speak" data-t="${esc(s[0])}" data-l="${D.voice}">🔊 ฟัง</button><button class="btn small ghost" data-act="speak" data-t="${esc(s[0])}" data-l="${D.voice}" data-r="0.55">🐢 ช้า ๆ</button>
+          <button class="btn small ${done[i] ? '' : 'pink'}" data-act="langSay" data-i="${i}">${done[i] ? '✅ พูดแล้ว' : '🗣️ พูดตามแล้ว'}</button></div></div>`; });
+    });
+  } else {
+    const sb = gSubj(ui.lang), lv = S.level[k.id];
+    h += `<p class="mini" style="color:var(--ink)">ทดสอบคำศัพท์และประโยค ${GQ} ข้อ ได้สูงสุด 2⭐ ${lv === undefined ? '' : '(ระดับ ' + gLevelOf(lv).name + ')'}</p>`;
+    h += lv === undefined ? `<div class="card c-y"><div class="ttl">เลือกระดับของ${esc(k.name)}ก่อนนะ</div><div class="pick">${GAME_LEVELS.map(l => `<button data-act="gSetLevel" data-v="${l.id}">${l.emoji} ${l.name}</button>`).join('')}</div></div>`
+      : `<div class="gsubs" style="grid-template-columns:1fr">${gCard(sb, k, dk)}</div>`;
+  }
   return h;
 }
 function vPlay() {
   const p = ui.play, sb = gSubj(p.subj), st = gCur();
-  if (!st) { ui.play = null; return vGames(); }
+  if (!st) { ui.play = null; return ui.tab === 'lang' ? vLangTab() : vGames(); }
   if (st.i >= st.q.length) {
     const stars = p.practice ? 0 : st.stars, sc = st.score;
     const msg = sc === GQ ? 'เก่งสุดยอด! 🌟' : sc >= 3 ? 'เก่งมาก! พยายามต่อไปนะ 💪' : 'ไม่เป็นไร พรุ่งนี้มีโจทย์ใหม่ ลองฝึกเพิ่มได้เลย 😊';
     return `<div class="card c-p starhero"><div class="s">${sc === GQ ? '🏆' : sc >= 3 ? '🎉' : '💪'}</div><div class="n">${sc}/${st.q.length}</div><div>${sb.emoji} ${sb.name}${p.practice ? ' · ฝึกเพิ่ม' : ''}</div>
       <p style="font-weight:700;margin:10px 0 4px">${msg}</p>
-      ${p.practice ? '<div class="mini" style="color:var(--ink)">โหมดฝึกเพิ่มไม่ได้ดาว</div>' : `<div class="big">+${stars} ⭐</div>${st.bonus ? '<div class="pill" style="margin-top:6px">🏆 โบนัสเล่นครบ 3 วิชา +1 ⭐</div>' : ''}`}</div>
+      ${p.practice ? '<div class="mini" style="color:var(--ink)">โหมดฝึกเพิ่มไม่ได้ดาว</div>' : `<div class="big">+${stars} ⭐</div>${gBonusPill(st)}`}</div>
       <div class="row"><button class="btn grow" data-act="gBack">กลับหน้าเกม</button><button class="btn ghost grow" data-act="gPractice" data-s="${p.subj}">🔁 ฝึกเพิ่ม</button></div>`;
   }
-  const q = st.q[st.i], ans = q.ch >= 0, long = q.c.some(c => String(c).length > 9);
+  const q = st.q[st.i], ans = q.ch >= 0, long = !q.fc && q.c.some(c => String(c).length > 9);
   let h = `<div class="row sp"><button class="btn small ghost" data-act="gBack">← กลับ</button><b>${sb.emoji} ${sb.name}${p.practice ? ' · ฝึกเพิ่ม' : ''}</b><span class="pill">ข้อ ${st.i + 1}/${st.q.length}</span></div>
     <div class="prog" style="margin:10px 0"><i style="width:${st.i / st.q.length * 100}%"></i></div>
-    <div class="card gq">${q.e ? `<div class="gemoji">${q.e}</div>` : ''}<div class="gtext">${esc(q.t)}</div>
+    <div class="card gq">${q.k ? `<div class="gkind">${esc(q.k)}</div>` : ''}${q.p ? `<div class="gpass">${esc(q.p)}</div>` : ''}${q.flag ? `<div class="gflag">${flagSvg(q.flag)}</div>` : ''}${q.car ? `<div class="gcar">${carSvg(q.car, q.cc, q.big)}</div>` : ''}${q.e ? `<div class="gemoji">${q.e}</div>` : ''}<div class="gtext">${esc(q.t)}</div>
       ${q.sp ? `<button class="btn small ghost" data-act="speak" data-t="${esc(q.sp.txt)}" data-l="${q.sp.lang}" style="margin-top:8px">🔊 ฟังเสียง</button>` : ''}</div>
-    <div class="gch ${long ? 'one' : ''}">${q.c.map((c, i) => `<button class="gc ${ans ? (i === q.a ? 'ok' : i === q.ch ? 'bad' : 'dim') : ''}" data-act="gAns" data-i="${i}" ${ans ? 'disabled' : ''}>${esc(c)}</button>`).join('')}</div>`;
-  if (ans) h += `<div class="card ${q.ch === q.a ? 'c-g' : 'c-p'}" style="margin-top:12px"><div class="ttl">${q.ch === q.a ? '🎉 ถูกต้อง!' : '😅 ยังไม่ใช่นะ'}</div>${q.x ? `<div>${esc(q.x)}</div>` : ''}${!p.practice && st.done && st.i + 1 >= st.q.length ? `<div class="win">⭐ คะแนน ${st.score}/${GQ} ได้ดาว +${st.stars}${st.bonus ? ' และโบนัส +1' : ''} เข้าบัญชีแล้ว</div>` : ''}</div>
+    <div class="gch ${long ? 'one' : ''}">${q.c.map((c, i) => `<button class="gc ${ans ? (i === q.a ? 'ok' : i === q.ch ? 'bad' : 'dim') : ''}" data-act="gAns" data-i="${i}" ${ans ? 'disabled' : ''}${q.fc ? `aria-label="ธงตัวเลือก ${i + 1}"` : ''}>${q.fc ? flagSvg(q.fc[i]) : esc(c)}</button>`).join('')}</div>`;
+  if (ans) h += `<div class="card ${q.ch === q.a ? 'c-g' : 'c-p'}" style="margin-top:12px"><div class="ttl">${q.ch === q.a ? '🎉 ถูกต้อง!' : '😅 ยังไม่ใช่นะ'}</div>${q.x ? `<div>${esc(q.x)}</div>` : ''}${!p.practice && st.done && st.i + 1 >= st.q.length ? `<div class="win">⭐ คะแนน ${st.score}/${GQ} ได้ดาว +${st.stars}${gBonusN(st) ? ' และโบนัส +' + gBonusN(st) : ''} เข้าบัญชีแล้ว</div>` : ''}</div>
     <button class="btn pink block" style="margin-top:12px" data-act="gNext">${st.i + 1 >= st.q.length ? 'ดูผลคะแนน 🏆' : 'ข้อต่อไป ▶️'}</button>`;
   return h;
 }
+const gBonusN = st => (+st.bonus) || 0;
+const gBonusPill = st => gBonusN(st) ? `<div class="pill" style="margin-top:6px">🏆 โบนัสเล่นครบหลายวิชา +${gBonusN(st)} ⭐</div>` : '';
 function gFinish(kid, subj, st) {
   if (st.done) return false;
   const dk = dkey(new Date());
   st.done = true; st.stars = gStarsFor(st.score);
   if (st.stars > 0) S.stars[kid].push({ t: 'game', c: 'game', subj, n: st.stars, d: dk, note: `🎮 เกม${gSubj(subj).name} ${st.score}/${GQ}`, ts: Date.now() });
-  if (gDoneCount(kid, dk) === 3 && !S.stars[kid].some(e => e.cid === 'gbonus' && e.d === dk)) {
-    S.stars[kid].push({ t: 'game', c: 'game', cid: 'gbonus', n: 1, d: dk, note: '🏆 เล่นเกมครบ 3 วิชา', ts: Date.now() + 1 }); st.bonus = true;
+  const dn = gDoneCount(kid, dk); st.bonus = 0;
+  if (dn >= 3 && !S.stars[kid].some(e => e.cid === 'gbonus' && e.d === dk)) {
+    S.stars[kid].push({ t: 'game', c: 'game', cid: 'gbonus', n: 1, d: dk, note: '🏆 เล่นเกมครบ 3 วิชา', ts: Date.now() + 1 }); st.bonus++;
+  }
+  if (dn >= GAME_CORE.length && !S.stars[kid].some(e => e.cid === 'gbonus6' && e.d === dk)) {
+    S.stars[kid].push({ t: 'game', c: 'game', cid: 'gbonus6', n: 1, d: dk, note: `🏆 เล่นเกมครบทั้ง ${dn} วิชา`, ts: Date.now() + 2 }); st.bonus++;
   }
   save();
   return true;
@@ -559,7 +602,11 @@ function guard(fn) {
 
 /* ---------- Actions ---------- */
 const A = {
-  tab: el => { ui.tab = el.dataset.tab; ui.play = null; render(); window.scrollTo(0, 0); },
+  sub: el => { ui.sub = el.dataset.s; render(); window.scrollTo(0, 0); },
+  ssub: el => { ui.ssub = el.dataset.s; render(); },
+  go: el => { ui.tab = el.dataset.tab; if (el.dataset.sub) ui.sub = el.dataset.sub; ui.play = null; render(); window.scrollTo(0, 0); },
+  jump: el => { const t = document.getElementById(el.dataset.id); if (t) t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); },
+  tab: el => { ui.tab = el.dataset.tab; ui.play = null; ui.lang = null; render(); window.scrollTo(0, 0); },
   kid: el => { ui.kid = el.dataset.id; S.lastKid = ui.kid; save(); render(); },
   when: el => { ui.when = el.dataset.w; render(); },
   gSetLevel: el => { S.level[ui.kid] = +el.dataset.v; save(); closeSheet(); render(); toast('ตั้งระดับแล้ว'); },
@@ -588,13 +635,18 @@ const A = {
     let got = false;
     if (!ui.play.practice) { if (st.i + 1 >= st.q.length) got = gFinish(ui.kid, ui.play.subj, st); else save(); }
     render();
-    if (got && (st.stars > 0 || st.bonus)) { burst(); toast(`⭐ ได้ดาว +${st.stars + (st.bonus ? 1 : 0)} อัตโนมัติ`); }
+    if (got && (st.stars > 0 || gBonusN(st))) { burst(); toast(`⭐ ได้ดาว +${st.stars + gBonusN(st)} อัตโนมัติ`); }
   },
   gNext: () => { const st = gCur(); st.i++; if (!ui.play.practice) save(); render(); window.scrollTo(0, 0); },
   gBack: () => { ui.play = null; render(); },
+  langOpen: el => { ui.lang = el.dataset.l; ui.lt = 'vocab'; ui.lcat = -1; render(); window.scrollTo(0, 0); },
+  langBack: () => { ui.lang = null; render(); window.scrollTo(0, 0); },
+  langTab: el => { ui.lt = el.dataset.t; render(); },
+  langCat: el => { ui.lcat = +el.dataset.c; render(); },
+  langSay: el => { const kid = ui.kid, L = ui.lang; S.lang[kid] = S.lang[kid] || {}; const d = (S.lang[kid][L] = S.lang[kid][L] || {}), i = el.dataset.i; if (d[i]) delete d[i]; else d[i] = 1; save(); render(); },
   speak: el => {
     try { if (!('speechSynthesis' in window)) return toast('เครื่องนี้ไม่รองรับเสียงอ่าน'); speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(el.dataset.t); u.lang = el.dataset.l || 'en-US'; u.rate = 0.85; speechSynthesis.speak(u); } catch (e) {}
+      const u = new SpeechSynthesisUtterance(el.dataset.t); u.lang = el.dataset.l || 'en-US'; u.rate = +el.dataset.r || 0.85; speechSynthesis.speak(u); } catch (e) {}
   },
   closeSheet,
   askYes: () => { const f = pendingYes; pendingYes = null; closeSheet(); if (f) f(); },
@@ -784,7 +836,7 @@ const A = {
     const id = el.dataset.id, k = S.kids.find(x => x.id === id);
     ask(`ลบ "${k.name}" และข้อมูลทั้งหมดของเขา?`, () => {
       S.kids = S.kids.filter(x => x.id !== id);
-      ['sched', 'check', 'stars', 'goal', 'chores', 'shop', 'games', 'gameSeen', 'level'].forEach(f => delete S[f][id]);
+      ['sched', 'check', 'stars', 'goal', 'chores', 'shop', 'games', 'gameSeen', 'level', 'lang'].forEach(f => delete S[f][id]);
       Object.keys(S.done).forEach(key => { if (key.endsWith('|' + id)) delete S.done[key]; });
       S.todos = S.todos.filter(t => t.kid !== id); S.special = S.special.filter(s => s.kid !== id);
       if (ui.kid === id) { ui.kid = S.kids[0].id; S.lastKid = ui.kid; }
